@@ -1,6 +1,6 @@
 ---
 name: imggen-api
-description: Generate or edit raster images through a user-configured OpenAI-compatible Images API with Bearer-key authentication, save the result locally, and display it in Codex. Use when the user explicitly invokes $imggen-api or an active custom provider exposes the Images API but Codex's built-in image_gen tool is unavailable. Do not use for the normal built-in image generator or gateways that require non-Bearer custom authentication.
+description: Generate or edit raster images through a user-configured OpenAI-compatible Images API, save outputs locally, and display them in Codex. Use when the user invokes $imggen-api or when a custom provider exposes the Images API but Codex's hosted generator is unavailable. Requires Bearer-key authentication; do not use for proprietary image endpoints.
 ---
 
 # ImgGen API

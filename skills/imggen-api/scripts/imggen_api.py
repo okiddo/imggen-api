@@ -357,10 +357,14 @@ def doctor(home: Path) -> int:
     return 0
 
 
+def has_option(arguments: list[str], name: str) -> bool:
+    return name in arguments or any(argument.startswith(f"{name}=") for argument in arguments)
+
+
 def has_output_argument(arguments: list[str], command: str) -> bool:
     if command == "generate-batch":
-        return "--out-dir" in arguments
-    return "--out" in arguments or "--out-dir" in arguments
+        return has_option(arguments, "--out-dir")
+    return has_option(arguments, "--out") or has_option(arguments, "--out-dir")
 
 
 def run_imagegen(home: Path, arguments: list[str]) -> int:
