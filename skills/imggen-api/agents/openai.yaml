@@ -1,0 +1,4 @@
+interface:
+  display_name: "ImgGen API"
+  short_description: "Generate images through compatible API gateways"
+  default_prompt: "Use $imggen-api to generate an image through my active OpenAI-compatible provider and display the saved result."
