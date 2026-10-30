@@ -53,6 +53,8 @@ These commands affect only the current shell and its child processes. For Codex 
 
 `IMAGEGEN_BASE_URL` may be omitted when the active Codex provider already has a compatible `base_url`. The skill can also use that provider's configured `env_key`, or its matching Codex API-key cache when `requires_openai_auth = true`.
 
+Current CC Switch Codex imports are recognized automatically. When the active `CODEX_HOME/config.toml` contains `experimental_bearer_token` and the provider's `base_url` matches the Images API origin, the skill can use that credential. It does not scan `cc-switch.db`, print API keys, or modify persisted credentials.
+
 ## Use in Codex
 
 Generate an image:

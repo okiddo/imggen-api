@@ -30,7 +30,9 @@ The Bearer credential is selected in this order:
 1. `IMAGEGEN_API_KEY`.
 2. The active provider's configured `env_key`, but only when its origin matches
    the selected API base URL.
-3. The Codex API-key cache when the matching active provider uses
+3. The active Codex configuration's `experimental_bearer_token`, used by CC
+   Switch imports, under the same origin restriction.
+4. The Codex API-key cache when the matching active provider uses
    `requires_openai_auth = true`.
 
 Never ask users to paste a key into chat. Ask them to set the applicable local

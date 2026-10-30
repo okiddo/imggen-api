@@ -53,6 +53,8 @@ export IMAGEGEN_API_KEY="your-api-key"
 
 如果当前启用的 Codex Provider 已配置兼容的 `base_url`，可以不设置 `IMAGEGEN_BASE_URL`。Skill 也可以读取该 Provider 配置的 `env_key`；当匹配的 Provider 使用 `requires_openai_auth = true` 时，还可以使用 Codex 的 API Key 缓存。
 
+当前 CC Switch 导入的 Codex 第三方 Provider 也会被自动识别：当活动 `CODEX_HOME/config.toml` 包含 `experimental_bearer_token`，且 Provider 的 `base_url` 与图片接口同源时，Skill 可以直接使用该凭据。它不会扫描 `cc-switch.db`，也不会打印或持久化修改任何 API Key。
+
 ## 在 Codex 中使用
 
 生成图片：

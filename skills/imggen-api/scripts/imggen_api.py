@@ -29,6 +29,7 @@ class ProviderConfig:
     provider_id: str
     base_url: str
     env_key: str | None
+    experimental_bearer_token: str | None
     requires_openai_auth: bool
 
 
@@ -112,6 +113,7 @@ def provider_from_simple_toml(path: Path) -> ProviderConfig | None:
         return None
 
     active_provider: str | None = None
+    experimental_bearer_token: str | None = None
     provider_values: dict[str, dict[str, Any]] = {}
     current_provider: str | None = None
     in_root = True
@@ -139,8 +141,12 @@ def provider_from_simple_toml(path: Path) -> ProviderConfig | None:
         if "=" not in line:
             continue
         key, raw_value = (part.strip() for part in line.split("=", 1))
-        if in_root and key == "model_provider":
-            active_provider = parse_toml_string(raw_value)
+        if in_root and key in {"model_provider", "experimental_bearer_token"}:
+            parsed_string = parse_toml_string(raw_value)
+            if key == "model_provider":
+                active_provider = parsed_string
+            else:
+                experimental_bearer_token = parsed_string
             continue
         if current_provider is None:
             continue
@@ -164,6 +170,7 @@ def provider_from_simple_toml(path: Path) -> ProviderConfig | None:
         provider_id=active_provider,
         base_url=configured_url,
         env_key=env_key if isinstance(env_key, str) else None,
+        experimental_bearer_token=experimental_bearer_token,
         requires_openai_auth=values.get("requires_openai_auth") is True,
     )
 
@@ -187,10 +194,16 @@ def active_provider(home: Path) -> ProviderConfig | None:
     if not isinstance(configured_url, str):
         return None
     env_key = provider.get("env_key")
+    experimental_bearer_token = config.get("experimental_bearer_token")
     return ProviderConfig(
         provider_id=provider_id,
         base_url=configured_url,
         env_key=env_key if isinstance(env_key, str) else None,
+        experimental_bearer_token=(
+            experimental_bearer_token
+            if isinstance(experimental_bearer_token, str)
+            else None
+        ),
         requires_openai_auth=provider.get("requires_openai_auth") is True,
     )
 
@@ -266,6 +279,10 @@ def resolve_api_key(
             configured = os.environ.get(provider.env_key)
             if configured and configured.strip():
                 return configured.strip(), f"active provider env_key ({provider.env_key})"
+        if provider and provider.experimental_bearer_token:
+            configured = provider.experimental_bearer_token.strip()
+            if configured:
+                return configured, "active Codex config experimental_bearer_token"
         if provider and provider.requires_openai_auth:
             cached = cached_codex_key(home)
             if cached:

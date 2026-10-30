@@ -2,6 +2,13 @@
 
 All notable changes to ImgGen API will be documented in this file.
 
+## 0.1.2
+
+- Recognize CC Switch-imported `experimental_bearer_token` credentials from the active Codex configuration.
+- Apply the existing provider-origin check before forwarding imported credentials.
+- Preserve environment-variable precedence and the existing `auth.json` fallback.
+- Add regression tests for standard and fallback TOML parsing, credential priority, origin isolation, cache fallback, and diagnostic redaction.
+
 ## 0.1.1
 
 - Make Simplified Chinese the default README and keep the English guide in `README.en.md`.
